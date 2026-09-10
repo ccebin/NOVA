@@ -38,9 +38,9 @@ public struct NovaConversationalDecisionProvider: AgentDecisionProvider, @unchec
         }
         
         // 2. Conservative Explicit Memory Extraction
-        let memoryExtraction = memoryManager.shouldExtractMemory(from: trimmed)
+        let memoryExtraction = await memoryManager.shouldExtractMemory(from: trimmed)
         if memoryExtraction.shouldSave, let key = memoryExtraction.key, let content = memoryExtraction.content {
-            let saved = memoryManager.saveOrUpdateMemory(
+            _ = await memoryManager.saveOrUpdateMemory(
                 key: key,
                 content: content,
                 category: memoryExtraction.category,
@@ -49,11 +49,11 @@ public struct NovaConversationalDecisionProvider: AgentDecisionProvider, @unchec
                 source: .explicitUser,
                 reasonForRetention: "Explicit user command"
             )
-            return .directResponse("Noted. I'll remember that \(saved.content).")
+            return .directResponse("Noted. I'll remember that \(content).")
         }
         
         // 3. Context & Memory Construction
-        let relevantMemories = memoryManager.retrieveRelevantMemories(for: trimmed, limit: 3)
+        let relevantMemories = await memoryManager.retrieveRelevantMemories(for: trimmed, limit: 3)
         let context = ConversationContext(
             currentMessage: trimmed,
             recentTurns: history,

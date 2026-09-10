@@ -3,7 +3,7 @@ import UIKit
 import AVFoundation
 import Speech
 
-#if canImport(FoundationModels)
+#if canImport(FoundationModels) && ENABLE_FOUNDATION_MODELS_PREVIEW
 import FoundationModels
 #endif
 
@@ -180,7 +180,7 @@ public final class CapabilityDetector: Sendable {
     }
     
     private func detectFoundationModels() -> FoundationModelsCapability {
-        #if canImport(FoundationModels)
+        #if canImport(FoundationModels) && ENABLE_FOUNDATION_MODELS_PREVIEW
         switch SystemLanguageModel.default.availability {
         case .available:
             return FoundationModelsCapability(

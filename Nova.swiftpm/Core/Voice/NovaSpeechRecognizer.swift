@@ -226,13 +226,15 @@ public final class NovaSpeechRecognizer: NSObject, @unchecked Sendable {
         guard frameLength > 0 else { return 0.0 }
         
         var sum: Float = 0.0
-        let stride = max(1, frameLength / 64) // sample subset for high-performance metering
+        let step = max(1, frameLength / 64) // sample subset for high-performance metering
         var count: Float = 0.0
         
-        for i in stride(from: 0, to: frameLength, by: stride) {
+        var i = 0
+        while i < frameLength {
             let sample = channelData[i]
             sum += sample * sample
             count += 1.0
+            i += step
         }
         
         guard count > 0 else { return 0.0 }
