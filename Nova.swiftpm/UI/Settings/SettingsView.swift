@@ -285,7 +285,10 @@ public struct SettingsView: View {
                     }
                     .listRowBackground(NovaTheme.surfaceCard)
                     
-                    Picker("Voice Locale", selection: $appState.voiceManager.voiceLocale) {
+                    Picker("Voice Locale", selection: Binding(
+                        get: { appState.voiceManager.voiceLocale },
+                        set: { appState.voiceManager.voiceLocale = $0 }
+                    )) {
                         Text("Device Default (\(Locale.current.identifier))").tag(Locale.current)
                         Text("Türkçe (tr-TR)").tag(Locale(identifier: "tr-TR"))
                         Text("English (en-US)").tag(Locale(identifier: "en-US"))

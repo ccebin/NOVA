@@ -515,7 +515,7 @@ public final class Phase6VoiceTests: Sendable {
             ConversationEntity.self,
             MessageEntity.self,
             MemoryEntity.self,
-            ToolExecutionEntity.self
+            ToolExecutionRecordEntity.self
         ])
         let configuration = ModelConfiguration(isStoredInMemoryOnly: true)
         return try ModelContainer(for: schema, configurations: [configuration])

@@ -71,10 +71,17 @@ public final class MockVerificationTool: NovaTool, @unchecked Sendable {
     }
 }
 
-public struct TestResultReport: Sendable {
+public struct TestResultReport: Sendable, Identifiable {
+    public var id: String { testName }
     public let testName: String
     public let passed: Bool
     public let detail: String
+    
+    public init(testName: String, passed: Bool, detail: String) {
+        self.testName = testName
+        self.passed = passed
+        self.detail = detail
+    }
 }
 
 @MainActor
