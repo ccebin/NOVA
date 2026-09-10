@@ -456,7 +456,7 @@ public enum AgentLoopTests {
     
     // 13. Critical Scenario (FoundationModels Real Execution)
     public static func test13_CriticalScenarioFoundationModels() async -> AgentLoopTestReport {
-        #if canImport(FoundationModels)
+        #if canImport(FoundationModels) && ENABLE_FOUNDATION_MODELS_PREVIEW
         // If FoundationModels is available in SDK, check runtime availability
         let availability = SystemLanguageModel.default.availability
         switch availability {

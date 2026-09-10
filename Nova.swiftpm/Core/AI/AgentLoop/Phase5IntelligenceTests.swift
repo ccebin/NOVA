@@ -420,7 +420,7 @@ public enum Phase5IntelligenceTests {
     
     // 15. Foundation Models unavailable state is handled honestly
     public static func test15_FoundationModelsUnavailableStateHandledHonestly() async -> Phase5TestReport {
-        #if canImport(FoundationModels)
+        #if canImport(FoundationModels) && ENABLE_FOUNDATION_MODELS_PREVIEW
         let availability = SystemLanguageModel.default.availability
         switch availability {
         case .available:

@@ -296,8 +296,13 @@ public final class GeminiLiveProvider: @unchecked Sendable {
             // Execute on-device using NOVA's ToolRegistry & ToolExecutor
             var responseOutput: [String: Any] = [:]
             if let tool = ToolRegistry.shared.tool(for: name) {
-                let toolArgs = ToolArguments(args)
-                let result = await ToolExecutor.shared.execute(tool: tool, arguments: toolArgs, isUserConfirmed: true)
+                var stringArgs: [String: String] = [:]
+                for (k, v) in args {
+                    stringArgs[k] = "\(v)"
+                }
+                let toolArgs = ToolArguments(stringArgs)
+                let context = ToolExecutionContext(idempotencyKey: callId, isUserConfirmed: true)
+                let result = await ToolExecutor.shared.execute(tool: tool, arguments: toolArgs, context: context)
                 
                 let isVerified = result.verification?.isVerified ?? (result.status == .success)
                 responseOutput = [
