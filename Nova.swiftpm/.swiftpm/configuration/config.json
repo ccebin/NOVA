@@ -1,0 +1,6 @@
+{
+  "fileVersion" : 1,
+  "bundleId" : "com.nova.assistant",
+  "appIcon" : "placeholder:sparkle",
+  "accentColor" : "preset:blue"
+}

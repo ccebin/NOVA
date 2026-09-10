@@ -1,0 +1,21 @@
+# Xcode & SwiftPM
+.build/
+DerivedData/
+*.xcuserstate
+project.xcworkspace/xcuserdata/
+*.xcuserdatad/
+.swiftpm/xcode/package.xcworkspace/xcuserdata/
+
+# OS / System
+.DS_Store
+*.swp
+*~
+
+# Secrets & Environment (Strict security enforcement)
+*.env
+*.key
+*.pem
+*.p8
+*.mobileprovision
+*.cer
+*.p12
