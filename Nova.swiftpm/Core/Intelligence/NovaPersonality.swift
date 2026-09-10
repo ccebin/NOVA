@@ -42,4 +42,8 @@ public struct NovaPersonality: Sendable {
         
         return sections.joined(separator: "\n\n")
     }
+    
+    public var systemPrompt: String {
+        systemInstruction()
+    }
 }

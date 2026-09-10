@@ -30,6 +30,7 @@ public struct Phase8TestReport: Sendable, Identifiable {
 }
 
 /// Deterministic test suite verifying Gemini 3.8 Flash, Gemini Live, ONE NOVA Routing, and Free Tier rules.
+@MainActor
 public final class Phase8GeminiTests: Sendable {
     
     public static func runAllTests() async -> [Phase8TestReport] {
@@ -454,7 +455,7 @@ public final class Phase8GeminiTests: Sendable {
         _ = mem.saveOrUpdateMemory(
             key: "user_coffee_preference",
             content: "User drinks black filter coffee",
-            category: .preference,
+            category: .userPreference,
             importance: 5,
             confidence: 1.0,
             source: .explicitUser,
@@ -533,38 +534,13 @@ public final class Phase8GeminiTests: Sendable {
     // MARK: - Category C: Tool Execution & Verification Gate
     
     public static func testToolCallThroughVerificationGate() async -> Phase8TestReport {
-        // Register a test tool in ToolRegistry
-        let testDef = ToolDefinition(
-            id: "verify_device_test_tool",
-            name: "Verify Device Test Tool",
-            description: "Test tool for verification gate flow",
-            arguments: [
-                ToolArgumentDefinition(name: "item", type: .string, description: "Item to verify", isRequired: true)
-            ],
-            riskLevel: .none,
-            domain: .utility
-        )
-        
-        let mockTool = MockExecutableTool(definition: testDef) { args in
-            ToolResult(
-                toolId: "verify_device_test_tool",
-                toolName: "Verify Device Test Tool",
-                status: .success,
-                message: "Device action executed",
-                verification: ToolVerification(
-                    isVerified: true,
-                    expectedState: "Verified",
-                    observedState: "Verified",
-                    explanation: "Action verified by device state inspection."
-                )
-            )
-        }
-        
-        ToolRegistry.shared.register(tool: mockTool)
+        let mockTool = MockVerificationTool(id: "verify_device_test_tool", name: "Verify Device Test Tool")
+        ToolRegistry.shared.register(mockTool)
         defer { ToolRegistry.shared.unregister(id: "verify_device_test_tool") }
         
-        let args = ToolArguments(["item": "test_token"])
-        let executed = await ToolExecutor.shared.execute(tool: mockTool, arguments: args, isUserConfirmed: true)
+        let args = ToolArguments(["title": "test_token"])
+        let context = ToolExecutionContext(idempotencyKey: UUID().uuidString, isUserConfirmed: true)
+        let executed = await ToolExecutor.shared.execute(tool: mockTool, arguments: args, context: context)
         let verified = executed.verification?.isVerified ?? false
         
         return Phase8TestReport(
@@ -583,10 +559,9 @@ public final class Phase8GeminiTests: Sendable {
             toolName: "Create Reminder",
             status: .failed,
             message: "Calendar/Reminders access denied by system.",
-            verification: ToolVerification(
+            verification: VerificationOutcome(
                 isVerified: false,
-                expectedState: "Reminder present",
-                observedState: "Reminder missing",
+                mismatches: ["Reminder missing"],
                 explanation: "VerificationGate: Reminder was not found in EventKit database."
             )
         )

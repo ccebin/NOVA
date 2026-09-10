@@ -42,6 +42,12 @@ public final class ToolRegistry: @unchecked Sendable {
         }
     }
     
+    public func unregister(id: String) {
+        lock.lock()
+        defer { lock.unlock() }
+        tools.removeValue(forKey: id)
+    }
+    
     public func clear() {
         lock.lock()
         defer { lock.unlock() }
