@@ -50,7 +50,7 @@ public final class RemindersTool: NovaTool, @unchecked Sendable {
         }
     }
     
-    public func captureBeforeState(arguments: ToolArguments) async throws -> ToolObservation {
+    public func captureBeforeState(arguments: ToolArguments) async throws -> ToolObservation? {
         guard let title = arguments.string(for: "title") else {
             return ToolObservation(properties: ["existingMatchingCount": "0"])
         }

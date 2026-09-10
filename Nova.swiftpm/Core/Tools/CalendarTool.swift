@@ -52,7 +52,7 @@ public final class CalendarTool: NovaTool, @unchecked Sendable {
         }
     }
     
-    public func captureBeforeState(arguments: ToolArguments) async throws -> ToolObservation {
+    public func captureBeforeState(arguments: ToolArguments) async throws -> ToolObservation? {
         guard let startDate = arguments.date(for: "startDate") else {
             return ToolObservation(properties: ["conflictsCount": "0"])
         }

@@ -1,7 +1,9 @@
 import Foundation
 import SwiftData
 
-#if canImport(FoundationModels)
+// Note: FoundationModels is a future Apple Intelligence framework requiring iOS 26.0+ SDK.
+// On iOS 17/18, use the fallback stub implementation below.
+#if canImport(FoundationModels) && ENABLE_FOUNDATION_MODELS_PREVIEW
 import FoundationModels
 
 /// Adapter conforming to Apple's official Tool protocol in the FoundationModels framework.

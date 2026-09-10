@@ -2,6 +2,7 @@ import Foundation
 import SwiftUI
 import Combine
 import SwiftData
+import AVFoundation
 
 /// Central coordinator for the NOVA Native Offline Voice & Conversational Audio Subsystem.
 /// Bridges real microphone capture and speech recognition into the unified Phase 5 intelligence loop,

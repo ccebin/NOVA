@@ -370,7 +370,7 @@ public final class SmolLM2Provider: AIProvider, @unchecked Sendable {
     }
     
     @available(iOS 18.0, macOS 15.0, *)
-    private func prefillPrompt(model: MLModel, tokens: [Int], using state: MLModel.State) throws -> [Float] {
+    private func prefillPrompt(model: MLModel, tokens: [Int], using state: MLState) throws -> [Float] {
         let seqLen = tokens.count
         guard seqLen > 0 else { throw AIProviderError.promptEmpty }
         
@@ -411,7 +411,7 @@ public final class SmolLM2Provider: AIProvider, @unchecked Sendable {
     }
     
     @available(iOS 18.0, macOS 15.0, *)
-    private func predictNextTokenLogits(model: MLModel, token: Int, using state: MLModel.State) throws -> [Float] {
+    private func predictNextTokenLogits(model: MLModel, token: Int, using state: MLState) throws -> [Float] {
         // Construct input_ids tensor [1, 1] (Int32)
         let inputArray = try MLMultiArray(shape: [1, 1], dataType: .int32)
         inputArray[0] = NSNumber(value: Int32(token))

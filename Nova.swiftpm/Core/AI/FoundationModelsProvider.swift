@@ -1,6 +1,8 @@
 import Foundation
 
-#if canImport(FoundationModels)
+// Note: FoundationModels is a future Apple Intelligence framework requiring iOS 26.0+ SDK.
+// On iOS 17/18, use the fallback AIProvider implementation below.
+#if canImport(FoundationModels) && ENABLE_FOUNDATION_MODELS_PREVIEW
 import FoundationModels
 
 public final class FoundationModelsProvider: AIProvider, @unchecked Sendable {
